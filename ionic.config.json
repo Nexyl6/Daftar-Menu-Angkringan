@@ -1,0 +1,7 @@
+{
+  "name": "daftar-menu",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
