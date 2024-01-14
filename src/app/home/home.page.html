@@ -1,20 +1,36 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Daftar Menu Angkringan
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-item>
+    <ion-label>Nama Makanan</ion-label>
+    <ion-input [(ngModel)]="newMenuItem.nama_makanan"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Nama Minuman</ion-label>
+    <ion-input [(ngModel)]="newMenuItem.nama_minuman"></ion-input>
+  </ion-item>
+
+  <ion-button (click)="addMenuItem()">Tambahkan Menu</ion-button>
+  
+  <ion-list *ngIf="menuItems.length > 0">
+    <ion-item *ngFor="let menuItem of menuItems">
+      <ion-label>{{ menuItem.nama_makanan }} - {{ menuItem.nama_minuman }}</ion-label>
+      <ion-checkbox [(ngModel)]="menuItem.completed" (ionChange)="updateMenuItemStatus(menuItem.id, menuItem.completed ? 1 : 0)"></ion-checkbox>
+      <ion-button slot="end" (click)="deleteMenuItem(menuItem.id)">Delete</ion-button>
+    </ion-item>
+  </ion-list>
+  
+  <div *ngIf="menuItems.length === 0">
+    Tidak Ada Menu Yang Tersedia
   </div>
+
+  <ion-button (click)="clearMenuItems()">Menghapus Semua Menu</ion-button>
 </ion-content>
