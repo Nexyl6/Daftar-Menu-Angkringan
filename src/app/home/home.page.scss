@@ -25,3 +25,32 @@
 #container a {
   text-decoration: none;
 }
+
+// In your global.scss file or style section
+
+ion-content {
+  padding: 20px;
+}
+
+ion-item {
+  margin-bottom: 10px;
+}
+
+.menu-content {
+  padding: 20px;
+}
+
+ion-list {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+ion-button {
+  margin-bottom: 15px;
+}
+
+#container {
+  padding: 20px;
+}
