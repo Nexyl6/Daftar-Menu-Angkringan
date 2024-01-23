@@ -7,50 +7,51 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
+  newMenuItem: any = { nama_makanan: '', nama_minuman: ''};
   menuItems: any[] = [];
-  newMenuItem = { nama_makanan: '', nama_minuman: '' };
 
   constructor(private sqliteService: SQLiteService) {
-    this.loadMenuItems();
+    this.loadMenu();
   }
 
-  async loadMenuItems(): Promise<void> {
-    this.menuItems = await this.sqliteService.getMenuItems();
+  async loadMenu(): Promise<void> {
+    this.menuItems = await this.sqliteService.getMenus();
   }
 
-  addMenuItem(): void {
-    const { nama_makanan, nama_minuman } = this.newMenuItem;
-    if (nama_makanan && nama_minuman) {
-      this.sqliteService.addMenuItem(nama_makanan, nama_minuman)
-        .then(() => {
-          this.loadMenuItems();
-          this.newMenuItem = { nama_makanan: '', nama_minuman: '' }; // Clear input fields after adding
-        })
-        .catch(error => console.error('Error adding menu item', error));
+
+  addMenu(): void {
+    if (this.newMenuItem.nama_makanan && this.newMenuItem.nama_minuman) {
+      this.saveMenuAndSync(this.newMenuItem.nama_makanan, this.newMenuItem.nama_minuman);
+      this.newMenuItem.nama_makanan = '';
+      this.newMenuItem.nama_minuman = '';
     }
   }
 
-  updateMenuItemStatus(id: number, completed: number): void {
-    this.sqliteService.updateMenuItemStatus(id, completed)
-      .then(() => this.loadMenuItems())
-      .catch(error => console.error('Error updating menu item status', error));
+  updateMenuStatus(id: number, berhasil: number): void {
+    this.sqliteService.updateMenuStatus(id, berhasil)
+      .then(() => this.loadMenu())
+      .catch(error => console.error('gagal memperbarui status menu', error));
   }
 
-  deleteMenuItem(id: number): void {
-    this.sqliteService.deleteMenuItem(id)
-      .then(() => this.loadMenuItems())
-      .catch(error => console.error('Error deleting menu item', error));
+  deleteMenu(id: number): void {
+    this.sqliteService.deleteMenu(id)
+      .then(() => this.loadMenu())
+      .catch(error => console.error('gagal menghapus menu', error));
   }
 
-  clearMenuItems(): void {
-    this.sqliteService.clearMenuItems()
-      .then(() => this.loadMenuItems())
-      .catch(error => console.error('Error clearing menu items', error));
+  clearMenu(): void {
+    this.sqliteService.clearMenus()
+      .then(() => this.loadMenu())
+      .catch(error => console.error('gagal menghapus menu', error));
   }
 
-  saveMenuItemAndSync(namaMakanan: string, namaMinuman: string): void {
-    this.sqliteService.addMenuItemAndSync(namaMakanan, namaMinuman)
-      .then(() => console.log('Menu item added and synced successfully'))
-      .catch(error => console.error('Error adding and syncing menu item', error));
+  saveMenuAndSync(namaMakanan: string, namaMinuman: string): void {
+    this.sqliteService.addMenuAndSync(namaMakanan, namaMinuman)
+      .then(() => {
+        console.log('Menu berhasil ditambahkan');
+        this.loadMenu(); 
+      })
+      .catch(error => console.error('Menu gagal ditambahkan', error));
   }
 }
