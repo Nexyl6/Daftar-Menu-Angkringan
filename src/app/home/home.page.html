@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar style="text-align: center;">
     <ion-title>
       Daftar Menu Angkringan
     </ion-title>
@@ -8,7 +8,7 @@
 
 <ion-content>
 
-  <ion-item>
+  <ion-item style="margin-top: 9px;">
     <ion-label>Nama Makanan</ion-label>
     <ion-input [(ngModel)]="newMenuItem.nama_makanan"></ion-input>
   </ion-item>
@@ -18,19 +18,24 @@
     <ion-input [(ngModel)]="newMenuItem.nama_minuman"></ion-input>
   </ion-item>
 
-  <ion-button (click)="addMenuItem()">Tambahkan Menu</ion-button>
+  <ion-button (click)="addMenu()" expand="full" color="secondary">Tambahkan Menu</ion-button>
   
   <ion-list *ngIf="menuItems.length > 0">
     <ion-item *ngFor="let menuItem of menuItems">
       <ion-label>{{ menuItem.nama_makanan }} - {{ menuItem.nama_minuman }}</ion-label>
-      <ion-checkbox [(ngModel)]="menuItem.completed" (ionChange)="updateMenuItemStatus(menuItem.id, menuItem.completed ? 1 : 0)"></ion-checkbox>
-      <ion-button slot="end" (click)="deleteMenuItem(menuItem.id)">Delete</ion-button>
+      <ion-select [(ngModel)]="menuItem.menuStatus" (ionChange)="updateMenuStatus(menuItem.id, menuItem.menuStatus)" interface="popover">
+        <ion-select-option value="0">Belum Dibuat</ion-select-option>
+        <ion-select-option value="1">Sudah Dibuat</ion-select-option>
+      </ion-select>
+      <ion-button slot="end" (click)="deleteMenu(menuItem.id)" fill="clear" color="danger">Hapus</ion-button>
     </ion-item>
-  </ion-list>
+  </ion-list>  
   
+  <!-- Message for No Available Menus -->
   <div *ngIf="menuItems.length === 0">
     Tidak Ada Menu Yang Tersedia
   </div>
 
-  <ion-button (click)="clearMenuItems()">Menghapus Semua Menu</ion-button>
+  <!-- Button to Clear All Menus -->
+  <ion-button (click)="clearMenu()" expand="full" color="danger">Menghapus Semua Menu</ion-button>
 </ion-content>
